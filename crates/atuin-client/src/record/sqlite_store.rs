@@ -10,7 +10,7 @@ use eyre::{eyre, Result};
 use fs_err as fs;
 
 use sqlx::{
-    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow},
+    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow, SqliteSynchronous},
     Row,
 };
 
@@ -42,6 +42,7 @@ impl SqliteStore {
 
         let opts = SqliteConnectOptions::from_str(path.as_os_str().to_str().unwrap())?
             .journal_mode(SqliteJournalMode::Wal)
+            .synchronous(SqliteSynchronous::Off)
             .foreign_keys(true)
             .create_if_missing(true);
 
